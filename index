@@ -5,6 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Planejamento do Casamento | M❤️R</title>
   <style>
+    .music-player{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+    margin-bottom:30px;
+    }
+
+    .music-player button{
+        background: linear-gradient(
+            135deg,
+            #d4b483,
+            #b9904d
+        );
+        color:white;
+        border:none;
+        padding:14px 28px;
+        border-radius:50px;
+        font-size:16px;
+        cursor:pointer;
+        transition:.3s;
+        box-shadow:0 5px 15px rgba(0,0,0,.15);
+    }
+
+    .music-player button:hover{
+        transform:translateY(-2px);
+        box-shadow:0 8px 20px rgba(0,0,0,.2);
+    }
+
     :root {
       --sage: #8f9f88;
       --sage-dark: #5f715b;
@@ -17,6 +45,8 @@
       --line: rgba(185,144,77,.38);
       --shadow: 0 18px 50px rgba(65, 52, 36, .20);
     }
+
+    
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
@@ -171,6 +201,15 @@
   <div class="wrap">
     <header>
       <div class="logo">M❤️R</div>
+        <div class="music-player">
+          <button id="btnMusica" onclick="toggleMusic()">
+              🎵 Nossa Música
+          </button>
+
+          <audio id="musica" loop>
+              <source src="Ainda_bem.mp3" type="audio/mpeg">
+          </audio>
+        </div>
       <p class="subtitle">Save the date • Planejamento do nosso casamento</p>
       <p class="intro">Vamos escolher juntos cada detalhe do nosso casamento e que cada escolha nos faça lembrar do quão grande e especial é o nosso amor!.</p>
     </header>
@@ -358,30 +397,47 @@
     }
 
     function gerarRelatorio() {
-      let html = `<div class="report-page"><div class="report-logo">M❤️R</div><h2 class="report-title">Relatório de decisões do casamento</h2>`;
-      sections.forEach(([title, names]) => {
-        html += `<div class="report-section"><h3>${title}</h3>`;
-        let hasAny = false;
-        names.forEach(name => {
-          let value = getValues(name);
-          if (name.includes('data')) value = formatDate(value);
-          if (value) {
-            hasAny = true;
-            html += `<p><strong>${labels[name]}:</strong> ${safe(value).replace(/\n/g, '<br>')}</p>`;
-          }
-        });
-        if (!hasAny) html += `<p class="empty">Ainda não definido.</p>`;
-        html += `</div>`;
-      });
-      html += `<div class="report-section"><p><strong>Gerado em:</strong> ${new Date().toLocaleString('pt-BR')}</p></div></div>`;
-      document.getElementById('report').innerHTML = html;
-      document.getElementById('report').style.display = 'block';
-    }
+  let html = `<div class="report-page"><div class="report-logo">M❤️R</div><h2 class="report-title">Relatório de decisões do casamento</h2>`;
+  sections.forEach(([title, names]) => {
+    html += `<div class="report-section"><h3>${title}</h3>`;
+    let hasAny = false;
+    names.forEach(name => {
+      let value = getValues(name);
+      if (name.includes('data')) value = formatDate(value);
+      if (value) {
+        hasAny = true;
+        html += `<p><strong>${labels[name]}:</strong> ${safe(value).replace(/\n/g, '<br>')}</p>`;
+      }
+    });
+    if (!hasAny) html += `<p class="empty">Ainda não definido.</p>`;
+    html += `</div>`;
+  });
+  html += `<div class="report-section"><p><strong>Gerado em:</strong> ${new Date().toLocaleString('pt-BR')}</p></div></div>`;
+  document.getElementById('report').innerHTML = html;
+  document.getElementById('report').style.display = 'block';
+}
 
-    function gerarPDF() {
-      gerarRelatorio();
-      setTimeout(() => window.print(), 250);
-    }
-  </script>
+function gerarPDF() {
+  gerarRelatorio();
+  setTimeout(() => window.print(), 250);
+}
+
+let tocando = false;
+
+function toggleMusic(){
+  const musica = document.getElementById("musica");
+  const botao = document.getElementById("btnMusica");
+
+  if(!tocando){
+    musica.play();
+    botao.innerHTML = "⏸️ Pausar Música";
+    tocando = true;
+  }else{
+    musica.pause();
+    botao.innerHTML = "🎵 Nossa Música";
+    tocando = false;
+  }
+}
+</script>
 </body>
 </html>
