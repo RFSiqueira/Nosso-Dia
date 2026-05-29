@@ -212,8 +212,8 @@
               🎵 Nossa Música
           </button>
 
-          <audio id="musica" loop>
-              <source src="Ainda_bem.mp3" type="audio/mpeg">
+          <audio id="musica" loop autoplay>
+            <source src="Ainda_bem.mp3" type="audio/mpeg">
           </audio>
         </div>
       <p class="subtitle">Save the date • Planejamento do nosso casamento</p>
@@ -430,6 +430,21 @@ function gerarPDF() {
 
 let tocando = false;
 
+window.addEventListener("load", function () {
+  const musica = document.getElementById("musica");
+  const botao = document.getElementById("btnMusica");
+
+  musica.play()
+    .then(() => {
+      tocando = true;
+      botao.innerHTML = "⏸️ Pausar Música";
+    })
+    .catch(() => {
+      tocando = false;
+      botao.innerHTML = "🎵 Tocar Música";
+    });
+});
+
 function toggleMusic(){
   const musica = document.getElementById("musica");
   const botao = document.getElementById("btnMusica");
@@ -440,7 +455,7 @@ function toggleMusic(){
     tocando = true;
   }else{
     musica.pause();
-    botao.innerHTML = "🎵 Nossa Música";
+    botao.innerHTML = "🎵 Continuar Música";
     tocando = false;
   }
 }
